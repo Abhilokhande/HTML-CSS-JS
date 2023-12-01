@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        background-color: rgb(159, 219, 228);
+    }
+    .box {
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+</style>
+<body>
+    <div>
+        <h1 style="text-align: center; background-color:#def055;">
+            Visual representation of sorting methods 
+        </h1>
+        <div style="align-content: center;">
+        <button style="align-items: center;" onclick="createInputBox()">BubbleSort</button>
+        <button style="align-items: center;"onclick="Insertion()">InsertionSort</button>
+    </div>
+</div>
+    <div id="container"></div>
+
+    <!--
+    <div class="box" id="myBox"></div>-->
+    <script>
+        function createInputBox() {
+      const inputElement = document.createElement('input');
+      inputElement.type = 'text';
+      inputElement.id='abc';
+      inputElement.placeholder = 'Enter comma seprated list....';
+      const buttonElement = document.createElement('button');
+      buttonElement.textContent = 'Click Me';
+      buttonElement.addEventListener('click', function () {
+        alert('Button Clicked!'); 
+        bubble();
+      });
+      document.body.appendChild(inputElement);
+      document.body.appendChild(buttonElement);
+    } function Insertion() {
+      const inputElement = document.createElement('input');
+      inputElement.type = 'text';
+      inputElement.id='xyz';
+      inputElement.placeholder = 'Enter comma seprated list....';
+      const buttonElement = document.createElement('button');
+      buttonElement.textContent = 'Click Me';
+      buttonElement.addEventListener('click', function () {
+        alert('Button Clicked!'); 
+      });
+      document.body.appendChild(inputElement);
+      document.body.appendChild(buttonElement);
+    }
+      function createAnimation(array) {
+      const container = document.getElementById('container');
+      array.forEach((value, index) => {
+       setTimeout(() => {
+      const box = document.createElement('div');
+      box.className = 'box';
+      box.textContent = value;
+      container.appendChild(box);
+           }, index * 1000); // Adjust the delay (in milliseconds) as needed
+         });
+      }
+
+    function bubble() {
+      const inputElement = document.getElementById('abc');
+      const inputValue = inputElement.value;
+      const array = inputValue.split(',');
+      bubbleSort(array);
+
+      function bubbleSort(arr) {
+  let n = arr.length;
+  let swapped;
+
+  do {
+    swapped = false;
+    document.write("Sorted array: ", arr);
+    for (let i = 0; i < n - 1; i++) {
+      if (arr[i] > arr[i + 1]) {
+        let temp = arr[i];
+        arr[i] = arr[i + 1];
+        arr[i + 1] = temp;
+        document.write(`Swapped ${arr[i]} and ${arr[i + 1]}: ${arr.join(', ')}`);
+        swapped = true;
+      }
+    }
+    n--;
+
+  } while (swapped);
+
+  return arr;
+}
+
+    }
+    }
+  }
+  return array;
+}
+    </script>
+</body>
+</html>

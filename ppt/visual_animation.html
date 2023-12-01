@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .output-container {
+           /* border: 1px solid #ccc;*/
+            padding: 10px;
+            width: 45%;
+        }
+
+        .swap-container {
+           /* border: 1px solid #ccc;*/
+            margin: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .array-box {
+          /*  border: 1px solid #000;*/
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .sorted-box {
+            background-color: #ccffcc; /* Light green color for sorted elements */
+        }
+
+        .change-box {
+            background-color: #ffd700; /* Light goldenrod yellow color for changes */
+        }
+
+        .swap-box {
+            background-color: #ff6347; /* Tomato color for swapped elements */
+        }
+
+        .input-container {
+            display: none;
+        }
+        body{
+            background-color:#83A2FF;
+        }
+    </style>
+    <title>Sorting Visualization</title>
+</head>
+<body>
+    <h1 style="text-align: center; background-color:#def055;">
+        Visual representation of sorting methods 
+    </h1>
+    <h1 style="text-align: center;">Bubble Sort</h1>
+    <p style="text-align: center;font-size: large;">
+        Bubble sort is a simple sorting algorithm that repeatedly steps through the list, <br>
+        compares adjacent elements, and swaps them if they are in the wrong order. <br>
+        The pass through the list is repeated until the list is sorted.
+    </p>
+    <h1 style="text-align: center;">Insertion Sort</h1>
+    <p style="text-align: center;font-size: large;">
+        Insertion sort is another simple sorting algorithm that builds the final sorted array one item at a time. <br>
+        It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort. However, <br>
+        insertion sort is often used in practice for small datasets or as a building block in more complex sorting algorithms.
+    </p>
+    <span style="font-style: italic; color: #ff6347;">Click the below button to enter the list elements</span>
+<button onclick="toggleInput()" >Input</button>
+
+<div class="input-container">
+    <label for="bubbleInput">List Elements:</label>
+    <input type="text" id="sort" placeholder="e.g., 64, 34, 25, 12, 22, 11, 90">
+    <button onclick="startBubbleSort()" style="background-color:#5264a3;">Bubble Sort</button>
+
+  
+    <button onclick="startInsertionSort()"  style="background-color:#5264a3;">Insertion Sort</button>
+</div>
+
+<div class="container">
+    <div class="output-container" id="bubbleOutput">
+        <h2>Bubble Sort Output</h2>
+    </div>
+    <div class="output-container" id="insertionOutput">
+        <h2>Insertion Sort Output</h2>
+    </div>
+</div>
+
+<script>
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function bubbleSortWithPrint(arr) {
+    var len = arr.length;
+    var outputContainer = document.getElementById("bubbleOutput");
+
+    do {
+        swapped = false;
+        for (var i = 0; i < len - 1; i++) {
+            if (arr[i] > arr[i + 1]) {
+                // swap elements if they are in the wrong order
+                var temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                swapped = true;
+
+                
+                var swapContainer = document.createElement("div");
+                swapContainer.className = "swap-container";
+
+                
+                for (var j = 0; j < len; j++) {
+                    var arrayBox = document.createElement("div");
+                    arrayBox.className = "array-box";
+                    arrayBox.innerHTML = arr[j];
+
+                   
+                    if (j <= i) {
+                        arrayBox.classList.add("sorted-box");
+                    }
+
+                   
+                    if (j === i || j === i + 1) {
+                        arrayBox.classList.add("swap-box");
+                    }
+
+                    swapContainer.appendChild(arrayBox);
+                }
+
+                outputContainer.appendChild(swapContainer);
+                await sleep(500);
+            }
+        }
+    } while (swapped);
+
+    return arr;
+}
+
+async function insertionSortWithPrint(arr) {
+    var len = arr.length;
+    var outputContainer = document.getElementById("insertionOutput");
+
+    for (var i = 1; i < len; i++) {
+        var key = arr[i];
+        var j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            // shift elements to the right
+            arr[j + 1] = arr[j];
+
+            // create a div for each shift
+            var swapContainer = document.createElement("div");
+            swapContainer.className = "swap-container";
+
+            // create a box for each array element
+            for (var k = 0; k < len; k++) {
+                var arrayBox = document.createElement("div");
+                arrayBox.className = "array-box";
+
+                // add a special class for sorted elements
+                if (k <= j) {
+                    arrayBox.classList.add("sorted-box");
+                }
+
+                // add a special class for the changing element
+                if (k === j + 1) {
+                    arrayBox.classList.add("change-box");
+                }
+
+                // add a special class for swapped elements
+                if (k >= j && k < i) {
+                    arrayBox.classList.add("swap-box");
+                }
+
+                arrayBox.innerHTML = arr[k];
+                swapContainer.appendChild(arrayBox);
+            }
+
+        
+            outputContainer.appendChild(swapContainer);
+            await sleep(500);
+
+            j = j - 1;
+        }
+
+        arr[j + 1] = key;
+    }
+
+    return arr;
+}
+
+function startBubbleSort() {
+    var inputArray = document.getElementById("sort").value;
+    var arrayToSort = inputArray.split(',').map(function(item) {
+        return parseInt(item, 10);
+    });
+
+    var outputContainer = document.getElementById("bubbleOutput");
+    outputContainer.innerHTML = ""; 
+
+    bubbleSortWithPrint(arrayToSort.slice());
+}
+
+function startInsertionSort() {
+    var inputArray = document.getElementById("sort").value;
+    var arrayToSort = inputArray.split(',').map(function(item) {
+        return parseInt(item, 10);
+    });
+
+    var outputContainer = document.getElementById("insertionOutput");
+    outputContainer.innerHTML = ""; 
+
+    insertionSortWithPrint(arrayToSort.slice());
+}
+
+function toggleInput() {
+    var inputContainer = document.querySelector('.input-container');
+    inputContainer.style.display = (inputContainer.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

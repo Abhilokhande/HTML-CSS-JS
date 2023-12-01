@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Flex Containers Example</title>
+</head>
+<style>
+    /* Style the full-page container to cover the entire page */
+.full-page-container {
+    display: flex;
+    background-color: antiquewhite;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Style the flex containers within the full-page container */
+.flex-container {
+    background-color:blue;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+    padding: 20px;
+    border: 2px solid #333;
+}
+
+/* Style the flex items within the flex containers */
+.flex-item {
+    flex: 1;
+    color: chartreuse;
+    padding: 10px;
+    border: 1px solid #666;
+}
+
+</style>
+<body style="background-color:lightgreen">
+    <div class="full-page-container">
+        <div class="flex-container">
+            <div class="flex-item">Flex Item 1</div>
+            <div class="flex-item">Flex Item 2</div>
+            <div class="flex-item">Flex Item 3</div>
+        </div>
+        <div class="flex-container">
+            <div class="flex-item">Flex Item 4</div>
+            <div class="flex-item">Flex Item 5</div>
+            <div class="flex-item">Flex Item 6</div>
+        </div>
+    </div>
+</body>
+</html>

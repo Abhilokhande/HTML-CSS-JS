@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .swap-container {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .array-box {
+            border: 1px solid #000;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .sorted-box {
+            background-color: #ccffcc; /* Light green color for sorted elements */
+        }
+
+        .change-box {
+            background-color: #ffd700; /* Light goldenrod yellow color for changes */
+        }
+
+        .input-container {
+            display: none;
+        }
+    </style>
+    <title>Insertion Sort Visualization</title>
+</head>
+<body>
+
+<button onclick="toggleInput()">Toggle Input</button>
+
+<div class="input-container">
+    <label for="arrayInput">Enter Array:</label>
+    <input type="text" id="arrayInput" placeholder="e.g., 64, 34, 25, 12, 22, 11, 90">
+    <button onclick="startInsertionSort()">Sort</button>
+</div>
+
+<script>
+function insertionSortWithPrint(arr) {
+    var len = arr.length;
+
+    for (var i = 1; i < len; i++) {
+        var key = arr[i];
+        var j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            // shift elements to the right
+            arr[j + 1] = arr[j];
+
+            // create a div for each shift
+            var swapContainer = document.createElement("div");
+            swapContainer.className = "swap-container";
+
+            // create a box for each array element
+            for (var k = 0; k < len; k++) {
+                var arrayBox = document.createElement("div");
+                arrayBox.className = "array-box";
+
+                // add a special class for sorted elements
+                if (k <= j) {
+                    arrayBox.classList.add("sorted-box");
+                }
+
+                // add a special class for the changing element
+                if (k === j + 1) {
+                    arrayBox.classList.add("change-box");
+                }
+
+                arrayBox.innerHTML = arr[k];
+                swapContainer.appendChild(arrayBox);
+            }
+
+            // append the div to the body
+            document.body.appendChild(swapContainer);
+
+            j = j - 1;
+        }
+
+        arr[j + 1] = key;
+    }
+
+    return arr;
+}
+
+function startInsertionSort() {
+    // Get the input array from the user
+    var inputArray = document.getElementById("arrayInput").value;
+
+    // Convert the input string to an array of numbers
+    var arrayToSort = inputArray.split(',').map(function(item) {
+        return parseInt(item, 10);
+    });
+
+    // Call the insertionSortWithPrint function with the input array
+    var sortedArray = insertionSortWithPrint(arrayToSort);
+
+    // Display the final sorted array
+    var finalResultContainer = document.createElement("div");
+    finalResultContainer.className = "swap-container";
+
+    // create a box for each array element in the final result
+    for (var i = 0; i < sortedArray.length; i++) {
+        var arrayBox = document.createElement("div");
+        arrayBox.className = "array-box";
+        arrayBox.innerHTML = sortedArray[i];
+        finalResultContainer.appendChild(arrayBox);
+    }
+
+    document.body.appendChild(finalResultContainer);
+}
+
+function toggleInput() {
+    var inputContainer = document.querySelector('.input-container');
+    inputContainer.style.display = (inputContainer.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

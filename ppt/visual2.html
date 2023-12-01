@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .container {
+      display: flex;
+      overflow: hidden;
+    }
+
+    .box {
+      width: 50px;
+      height: 50px;
+      margin: 10px;
+      border: 1px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="boxContainer"></div>
+
+<script>
+  function createBoxAnimation(array) {
+    const container = document.getElementById('boxContainer');
+    container.innerHTML = '';
+
+    array.forEach((value, index) => {
+      const box = document.createElement('div');
+      box.className = 'box';
+      box.textContent = value;
+      container.appendChild(box);
+
+      // Animate the box
+      setTimeout(() => {
+        box.style.transform = `translateX(${index * 70}px)`; // Adjust spacing
+      }, index * 100); // Adjust speed
+    });
+  }
+
+  // Example usage
+  const myArray = [1, 2, 3, 4, 5];
+  createBoxAnimation(myArray);
+</script>
+
+</body>
+</html>

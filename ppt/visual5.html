@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Add your styles here */
+    </style>
+    <title>Sorting Performance Comparison</title>
+</head>
+<body>
+
+<button onclick="toggleInput()">Toggle Input</button>
+
+<div class="input-container">
+    <label for="bubbleInput">Enter Array:</label>
+    <input type="text" id="bubbleInput" placeholder="e.g., 64, 34, 25, 12, 22, 11, 90">
+    <button onclick="compareSortingPerformance()">Compare Sorting Performance</button>
+</div>
+
+<div class="performance-output" id="performanceOutput">
+    <!-- Performance results will be displayed here -->
+</div>
+
+<script>
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function bubbleSort(arr) {
+    var len = arr.length;
+
+    for (var i = 0; i < len - 1; i++) {
+        for (var j = 0; j < len - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                var temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+async function insertionSort(arr) {
+    var len = arr.length;
+
+    for (var i = 1; i < len; i++) {
+        var key = arr[i];
+        var j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+
+        arr[j + 1] = key;
+    }
+}
+
+async function measureSortingPerformance(sortFunction, inputArray) {
+    var startTime = performance.now();
+    await sortFunction(inputArray.slice());
+    var endTime = performance.now();
+    return endTime - startTime;
+}
+
+async function compareSortingPerformance() {
+    var inputArray = document.getElementById("bubbleInput").value.split(',').map(item => parseInt(item.trim(), 10));
+
+    var sortedTimeBubble = await measureSortingPerformance(bubbleSort, inputArray.slice().sort((a, b) => a - b));
+    var sortedTimeInsertion = await measureSortingPerformance(insertionSort, inputArray.slice().sort((a, b) => a - b));
+
+    var reversedTimeBubble = await measureSortingPerformance(bubbleSort, inputArray.slice().sort((a, b) => b - a));
+    var reversedTimeInsertion = await measureSortingPerformance(insertionSort, inputArray.slice().sort((a, b) => b - a));
+
+    var nearlySortedTimeBubble = await measureSortingPerformance(bubbleSort, inputArray.slice().map((value, index) => index % 10 === 0 ? Math.floor(Math.random() * 100) : value));
+    var nearlySortedTimeInsertion = await measureSortingPerformance(insertionSort, inputArray.slice().map((value, index) => index % 10 === 0 ? Math.floor(Math.random() * 100) : value));
+
+    var unsortedTimeBubble = await measureSortingPerformance(bubbleSort, inputArray.slice());
+    var unsortedTimeInsertion = await measureSortingPerformance(insertionSort, inputArray.slice());
+
+    // Display results
+    var outputContainer = document.getElementById("performanceOutput");
+    outputContainer.innerHTML = `
+        <h2>Sorting Performance Comparison</h2>
+        <p>Sorted List:</p>
+        <ul>
+            <li>Bubble Sort: ${sortedTimeBubble.toFixed(2)} ms</li>
+            <li>Insertion Sort: ${sortedTimeInsertion.toFixed(2)} ms</li>
+        </ul>
+        <p>Reversed List:</p>
+        <ul>
+            <li>Bubble Sort: ${reversedTimeBubble.toFixed(2)} ms</li>
+            <li>Insertion Sort: ${reversedTimeInsertion.toFixed(2)} ms</li>
+        </ul>
+        <p>Nearly Sorted List:</p>
+        <ul>
+            <li>Bubble Sort: ${nearlySortedTimeBubble.toFixed(2)} ms</li>
+            <li>Insertion Sort: ${nearlySortedTimeInsertion.toFixed(2)} ms</li>
+        </ul>
+        <p>Unsorted List:</p>
+        <ul>
+            <li>Bubble Sort: ${unsortedTimeBubble.toFixed(2)} ms</li>
+            <li>Insertion Sort: ${unsortedTimeInsertion.toFixed(2)} ms</li>
+        </ul>
+    `;
+}
+
+function toggleInput() {
+    var inputContainer = document.querySelector('.input-container');
+    inputContainer.style.display = (inputContainer.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+         body{
+        background-color: rgb(159, 219, 228);
+    }
+        .swap-container {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .array-box {
+            border: 1px solid #000;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .swapped-box {
+            background-color: #d6de43; /* Light coral color for swapped elements */
+        }
+
+        .input-container {
+            display: none;
+        }
+    </style>
+    <title>Bubble Sort Visualization</title>
+</head>
+<body>
+    <h1 style="text-align: center; background-color:#def055;">
+        Visual representation of sorting methods 
+    </h1>
+    <div style="align-content: center;" class="button">
+        <button style="align-items: center;" onclick="toggleInput()">BubbleSort</button>
+        <button style="align-items: center;"onclick="Insertion()">InsertionSort</button>
+    </div>
+
+
+<div class="input-container">
+    <label for="arrayInput">Enter Array:</label>
+    <input type="text" id="arrayInput" placeholder="e.g., 64, 34, 25, 12, 22, 11, 90">
+    <button onclick="startBubbleSort()">Sort</button>
+</div>
+
+<script>
+function bubbleSortWithPrint(arr) {
+    var len = arr.length;
+    var swapped;
+
+    do {
+        swapped = false;
+        for (var i = 0; i < len - 1; i++) {
+            if (arr[i] > arr[i + 1]) {
+                // swap elements if they are in the wrong order
+                var temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                swapped = true;
+
+                // create a div for each swap
+                var swapContainer = document.createElement("div");
+                swapContainer.className = "swap-container";
+
+                // create a box for each array element
+                for (var j = 0; j < arr.length; j++) {
+                    var arrayBox = document.createElement("div");
+                    arrayBox.className = "array-box";
+                    arrayBox.innerHTML = arr[j];
+
+                    // add a special class for swapped elements
+                    if (j === i || j === i + 1) {
+                        arrayBox.classList.add("swapped-box");
+                    }
+
+                    swapContainer.appendChild(arrayBox);
+                }
+
+                // append the div to the body
+                document.body.appendChild(swapContainer);
+            }
+        }
+    } while (swapped);
+
+    return arr;
+}
+
+function startBubbleSort() {
+    // Get the input array from the user
+    var inputArray = document.getElementById("arrayInput").value;
+
+    // Convert the input string to an array of numbers
+    var arrayToSort = inputArray.split(',').map(function(item) {
+        return parseInt(item, 10);
+    });
+
+    // Call the bubbleSortWithPrint function with the input array
+    var sortedArray = bubbleSortWithPrint(arrayToSort);
+
+    // Display the final sorted array
+    var finalResultContainer = document.createElement("div");
+    finalResultContainer.className = "swap-container";
+
+    // create a box for each array element in the final result
+    for (var i = 0; i < sortedArray.length; i++) {
+        var arrayBox = document.createElement("div");
+        arrayBox.className = "array-box";
+        arrayBox.innerHTML = sortedArray[i];
+        finalResultContainer.appendChild(arrayBox);
+    }
+
+    document.body.appendChild(finalResultContainer);
+}
+
+function toggleInput() {
+    var inputContainer = document.querySelector('.input-container');
+    inputContainer.style.display = (inputContainer.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>
